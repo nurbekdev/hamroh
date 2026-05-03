@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #F8F7F4;
+  --bg-secondary: #F0EFEC;
+  --bg-card: #FFFFFF;
+  --text: #111111;
+  --text-muted: #888888;
+  --border: rgba(0, 0, 0, 0.08);
+  --shadow: rgba(0, 0, 0, 0.10);
+  --bg-primary: #F8F7F4;
+  --bg-dark: #111111;
+  --text-primary: #111111;
+  --text-white: #F5F5F5;
+  --accent: #111111;
+}
+
+.dark {
+  --bg: #0E0E0E;
+  --bg-secondary: #161616;
+  --bg-card: #1A1A1A;
+  --text: #F2F0EC;
+  --text-muted: #666666;
+  --border: rgba(255, 255, 255, 0.08);
+  --shadow: rgba(0, 0, 0, 0.40);
+  --bg-primary: #0E0E0E;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+}
+
+/* Scroll margin so anchors don't hide under fixed navbar */
+[id] {
+  scroll-margin-top: 5rem;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Safe area for notch phones (iOS) */
+.pt-safe {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Robot eyes blink */
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+
+.robot-eye-blink {
+  transform-origin: center;
+  animation: blink 5s ease-in-out infinite;
+}
+
+/* Dot pulse (hero slider) */
+@keyframes dot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+.dot-active {
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+/* Smooth theme transition */
+* {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
+}
+
+img,
+svg,
+canvas,
+video {
+  transition: none;
+}

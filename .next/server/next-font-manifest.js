@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/nurbekdev/Developer/hamrohio/app/layout\":[\"static/media/13971731025ec697-s.p.woff2\",\"static/media/5c0c2bcbaa4149ca-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"

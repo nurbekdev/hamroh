@@ -5,11 +5,11 @@ import { motion, useInView } from "framer-motion";
 import { Check, Lock } from "lucide-react";
 
 const included = [
-  "1x Hamrohio device",
-  "Desktop app (bepul)",
-  "Founders badge",
-  "Birinchi yangilanishlar",
-  "Priority support",
+  "1x Hamrohio desk robot",
+  "macOS va Windows uchun desktop app",
+  "50+ jonli yuz animatsiyalari",
+  "Pomodoro, task done va idle rejimlari",
+  "Birinchi firmware yangilanishlari",
 ];
 
 const FOUNDERS_LEFT = 23;
@@ -35,7 +35,7 @@ export function Pricing() {
             Pre-order narxi
           </h2>
           <p className="mt-3 text-[#888] dark:text-[#666]">
-            Birinchi 100 ta uchun maxsus narx 🤍
+            Birinchi batch uchun maxsus narx
           </p>
         </motion.div>
         <motion.div
@@ -52,11 +52,13 @@ export function Pricing() {
             </div>
             <div className="flex flex-wrap items-baseline gap-2">
               <span className="font-display text-3xl font-bold text-[#111] md:text-4xl dark:text-[#F2F0EC]">
-                149,000 so&apos;m
+                590 000 so&apos;m
               </span>
-              <span className="text-[#888] line-through dark:text-[#666]">199,000 so&apos;m</span>
+              <span className="text-[#888] line-through dark:text-[#666]">690 000 so&apos;m</span>
             </div>
-            <p className="mt-1 text-sm text-[#888] dark:text-[#666]">yoki $12 USD</p>
+            <p className="mt-1 text-sm text-[#888] dark:text-[#666]">
+              Hamroh qurilmasi + desktop app + firmware
+            </p>
             <ul className="mt-8 space-y-3">
               {included.map((item) => (
                 <li key={item} className="flex items-center gap-3 text-[#111] dark:text-[#F2F0EC]">

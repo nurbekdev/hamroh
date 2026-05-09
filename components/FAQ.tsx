@@ -31,7 +31,7 @@ const items = [
   },
   {
     q: "Keyingi batchda narx qanchaga oshadi?",
-    a: "Founders narxi faqat birinchi 100 ta uchun. Keyin narx oshadi.",
+    a: "Hozirgi founders narxi 590 000 so'm. Keyingi batch uchun narx 690 000 so'mdan boshlanishi rejalashtirilgan.",
   },
 ];
 

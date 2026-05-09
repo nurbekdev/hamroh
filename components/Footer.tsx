@@ -6,6 +6,7 @@ import { Instagram } from "lucide-react";
 
 const links = [
   { href: "#xususiyatlar", label: "Xususiyatlar" },
+  { href: "#real-use", label: "Live" },
   { href: "#narx", label: "Narx" },
   { href: "#faq", label: "FAQ" },
   { href: "#roadmap", label: "Roadmap" },

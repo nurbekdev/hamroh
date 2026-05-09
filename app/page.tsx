@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/HeroSection";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Reactions } from "@/components/Reactions";
 import { Features } from "@/components/Features";
+import { RealUseGallery } from "@/components/RealUseGallery";
 import { Specs } from "@/components/Specs";
 import { Pricing } from "@/components/Pricing";
 import { FAQ } from "@/components/FAQ";
@@ -19,6 +20,7 @@ export default function Home() {
         <HowItWorks />
         <Reactions />
         <Features />
+        <RealUseGallery />
         <Specs />
         <Pricing />
         <FAQ />

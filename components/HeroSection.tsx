@@ -40,6 +40,12 @@ export function HeroSection() {
       <p className="mb-6 text-center text-sm tracking-wide text-black/40 dark:text-white/40">
         Ish stolingizning aqlli hamrohi
       </p>
+      <a
+        href="#narx"
+        className="mb-5 inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-white/80 px-4 py-2 text-sm font-semibold text-black/70 shadow-sm backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white dark:border-white/[0.08] dark:bg-white/[0.08] dark:text-white/75 dark:hover:bg-white/[0.12]"
+      >
+        Founders narxi: <span className="text-black dark:text-white">590 000 so&apos;m</span>
+      </a>
 
       {/* HERO CARD — faqat robot GIF */}
       <div className="w-full max-w-3xl overflow-hidden rounded-[28px] border border-black/[0.06] bg-[#EEECEA] shadow-[0_40px_100px_rgba(0,0,0,0.10)] transition-colors duration-300 dark:border-white/[0.06] dark:bg-[#1C1C1C]">
@@ -125,7 +131,7 @@ export function HeroSection() {
         </h1>
         <p className="mx-auto mb-8 max-w-md text-base leading-relaxed text-black/45 dark:text-white/45 md:text-lg">
           Monitor burchagida yashab, vazifalaringizni ko&apos;radigan —
-          O&apos;zbekistonning birinchi aqlli desk roboti.
+          desktop app bilan sinxron ishlaydigan aqlli desk roboti.
         </p>
         <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
           <a

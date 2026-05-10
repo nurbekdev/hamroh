@@ -1,1 +1,1 @@
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/nurbekdev/Developer/hamrohio/app/layout\":[\"static/media/13971731025ec697-s.p.woff2\",\"static/media/5c0c2bcbaa4149ca-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"
+self.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/Users/nurbekdev/Downloads/ESP32-S3-Touch-AMOLED-1.64-Demo 4/ESP-IDF/07_FactoryProgram/hamrohio-landing/app/layout":["static/media/13971731025ec697-s.p.woff2","static/media/5c0c2bcbaa4149ca-s.p.woff2"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}';

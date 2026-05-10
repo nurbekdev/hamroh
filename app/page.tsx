@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
 import { HowItWorks } from "@/components/HowItWorks";
-import { Reactions } from "@/components/Reactions";
 import { Features } from "@/components/Features";
 import { RealUseGallery } from "@/components/RealUseGallery";
 import { Specs } from "@/components/Specs";
@@ -18,7 +17,6 @@ export default function Home() {
       <main className="min-w-0 overflow-x-hidden">
         <HeroSection />
         <HowItWorks />
-        <Reactions />
         <Features />
         <RealUseGallery />
         <Specs />

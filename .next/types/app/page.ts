@@ -1,4 +1,4 @@
-// File: /Users/nurbekdev/Developer/hamrohio/app/page.tsx
+// File: /Users/nurbekdev/Downloads/ESP32-S3-Touch-AMOLED-1.64-Demo 4/ESP-IDF/07_FactoryProgram/hamrohio-landing/app/page.tsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

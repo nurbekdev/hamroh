@@ -12,6 +12,12 @@ const links = [
   { href: "#roadmap", label: "Roadmap" },
 ];
 
+const legalLinks = [
+  { href: "/support", label: "Support" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/privacy-choices", label: "Privacy Choices" },
+];
+
 export function Footer() {
   return (
     <footer className="border-t border-black/[0.06] bg-[#F8F7F4] pb-safe transition-colors duration-300 dark:border-white/[0.06] dark:bg-[#0E0E0E]">
@@ -72,6 +78,17 @@ export function Footer() {
         <p className="mt-2 text-center text-xs text-[#888] dark:text-[#666] sm:mt-3">
           © 2026 Hamrohio. Barcha huquqlar himoyalangan.
         </p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-[#888] dark:text-[#666]">
+          {legalLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="min-h-[32px] rounded-full px-2 py-2 underline-offset-4 transition hover:text-[#444] hover:underline dark:hover:text-[#ccc]"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
       </div>
     </footer>
   );

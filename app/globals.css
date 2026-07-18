@@ -81,16 +81,16 @@ body {
   animation: dot-pulse 2s ease-in-out infinite;
 }
 
-/* Smooth theme transition */
-* {
-  transition-property: background-color, border-color, color;
-  transition-duration: 0.25s;
-  transition-timing-function: ease;
-}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-img,
-svg,
-canvas,
-video {
-  transition: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -4,10 +4,11 @@ import { useTheme } from "next-themes";
 import { Moon, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { HamrohMark } from "./HamrohMark";
 
 const navLinks = [
+  { label: "Notes", href: "#notes" },
   { label: "Xususiyatlar", href: "#xususiyatlar" },
   { label: "Live", href: "#real-use" },
   { label: "Narx", href: "#narx" },
@@ -34,15 +35,9 @@ export function Navbar() {
               className="flex min-h-[44px] min-w-0 flex-1 items-center gap-2 rounded-full px-2 py-1.5 sm:min-h-0 sm:flex-initial sm:gap-2.5 sm:px-3 sm:py-2"
               onClick={() => setOpen(false)}
             >
-              <Image
-                src="/gifs/logo.jpg"
-                alt="Hamrohio"
-                width={32}
-                height={32}
-                className="h-7 w-7 shrink-0 rounded-full object-cover sm:h-8 sm:w-8"
-              />
+              <HamrohMark className="!h-7 !w-7 !rounded-[7px] sm:!h-8 sm:!w-8 sm:!rounded-lg" />
               <span className="truncate text-sm font-semibold sm:max-w-[120px]">
-                hamrohio
+                Hamroh IO
               </span>
             </Link>
             <div className="mx-0.5 hidden h-4 w-px shrink-0 bg-black/10 sm:mx-1 sm:block dark:bg-white/10" />

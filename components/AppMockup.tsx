@@ -2,21 +2,6 @@
 
 import { Apple } from "lucide-react";
 
-function WindowsLogo({ size = 16 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className="opacity-80"
-      aria-hidden
-    >
-      <path d="M3 5.5L10.5 4.5V11.5H3V5.5ZM3 18.5V12.5H10.5V19.5L3 18.5ZM11.5 4.5L21 3V11.5H11.5V4.5ZM11.5 19.5V12.5H21V21L11.5 19.5Z" />
-    </svg>
-  );
-}
-
 const slideContent: Record<
   number,
   {
@@ -75,7 +60,6 @@ export function AppMockup({ slide }: { slide: number }) {
           <>
             <div className="mb-4 flex gap-2 opacity-80">
               <Apple size={16} />
-              <WindowsLogo size={16} />
             </div>
             <p className="whitespace-pre-line font-bold text-sm leading-tight text-white">
               {content.title}

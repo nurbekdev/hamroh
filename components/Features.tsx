@@ -3,44 +3,44 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
+  NotebookPen,
   ListTodo,
   Timer,
   TrendingUp,
   Smile,
   BarChart3,
-  Bell,
 } from "lucide-react";
 
 const features = [
   {
-    icon: ListTodo,
-    title: "Vazifalar",
-    desc: "Kunlik rejalaringizni boshqaring",
+    icon: NotebookPen,
+    title: "Tez Notes",
+    desc: "Fikrni bir lahzada yozing va displayga chiqaring",
   },
   {
     icon: Timer,
-    title: "Focus Timer",
-    desc: "Pomodoro texnikasi bilan chuqur ishlang",
+    title: "Fokus",
+    desc: "Sokin Pomodoro sessiyalari bilan chuqur ishlang",
+  },
+  {
+    icon: ListTodo,
+    title: "Vazifalar",
+    desc: "Bugungi muhim ishlarni bitta aniq rejada saqlang",
   },
   {
     icon: TrendingUp,
     title: "Odatlar",
-    desc: "Streak bilan kuzating",
+    desc: "Kichik eslatmalar bilan ritmni uzmang",
   },
   {
     icon: Smile,
-    title: "Jonli Yuz",
-    desc: "50+ animatsiya siz bilan birga",
+    title: "Jonli display",
+    desc: "Harakatlaringizga tabiiy animatsiyalar javob beradi",
   },
   {
     icon: BarChart3,
     title: "Statistika",
-    desc: "Vaqtingiz qayerga ketdi?",
-  },
-  {
-    icon: Bell,
-    title: "Eslatmalar",
-    desc: "Tez kunda",
+    desc: "Fokus va bajarilgan ishlarni sokin kuzating",
   },
 ];
 
@@ -60,11 +60,11 @@ export function Features() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           className="mb-14 text-center"
         >
-          <h2 className="font-display text-3xl font-bold text-[#111] md:text-4xl dark:text-[#F2F0EC]">
-            Hamma narsa bir joyda
+          <h2 className="font-display text-3xl font-bold text-[#111] md:text-5xl dark:text-[#F2F0EC]">
+            Bir tizim. Kamroq shovqin.
           </h2>
           <p className="mt-3 text-[#888] dark:text-[#666]">
-            Desktop app bilan to&apos;liq integratsiya
+            Mac app va Hamroh displayi bitta sokin ritmda ishlaydi.
           </p>
         </motion.div>
         <motion.div
@@ -76,7 +76,7 @@ export function Features() {
               transition: { staggerChildren: 0.08, delayChildren: 0.1 },
             },
           }}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid border-y border-black/[0.08] sm:grid-cols-2 lg:grid-cols-3 dark:border-white/[0.08]"
         >
           {features.map((f) => (
             <motion.div
@@ -89,10 +89,9 @@ export function Features() {
                   transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
                 },
               }}
-              whileHover={{ y: -4, boxShadow: "0 20px 60px rgba(0,0,0,0.14)" }}
-              className="rounded-card border border-black/[0.08] bg-white p-6 shadow-card transition dark:border-white/[0.08] dark:bg-[#1A1A1A]"
+              className="border-b border-black/[0.08] p-6 sm:border-r lg:p-8 lg:[&:nth-child(3n)]:border-r-0 dark:border-white/[0.08]"
             >
-              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#111] text-white dark:bg-white dark:text-[#111]">
+              <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-md bg-emerald-500/12 text-emerald-700 dark:text-emerald-400">
                 <f.icon size={20} strokeWidth={1.8} />
               </div>
               <h3 className="font-display text-lg font-semibold text-[#111] dark:text-[#F2F0EC]">

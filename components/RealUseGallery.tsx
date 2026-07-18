@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { CheckCircle2, Clock3, ListChecks } from "lucide-react";
+import { Clock3, ListChecks, NotebookPen } from "lucide-react";
 
 const photos = [
   {
@@ -22,9 +22,9 @@ const photos = [
   {
     src: "/photos/hamroh-live-3.jpg",
     fallback: "/gifs/hero-relax-hamrohio.gif",
-    title: "Ish stolingizda doimiy hamroh",
-    desc: "Kichik AMOLED display, 3D printed korpus va minimal desktop tajriba.",
-    icon: CheckCircle2,
+    title: "Fikr yo'qolishidan oldin saqlanadi",
+    desc: "Command + L bilan yozilgan tez note appda qoladi va bir bosishda Hamroh displayiga chiqadi.",
+    icon: NotebookPen,
   },
 ];
 
@@ -51,7 +51,7 @@ export function RealUseGallery() {
             Hamroh shunchaki dekor emas. U vazifangizga javob beradi.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-[#777] dark:text-[#777] md:text-lg">
-            Robot desktop app bilan sinxron ishlaydi: fokus, to-do va tugagan ishlar displayda jonli ko'rinadi.
+            Native macOS app fokus, vazifalar va tez notelarni Hamroh displayi bilan bir ritmda ushlab turadi.
           </p>
         </motion.div>
 
@@ -62,7 +62,7 @@ export function RealUseGallery() {
               initial={{ opacity: 0, y: 28 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: index * 0.1, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className={`group overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-card-hover dark:border-white/[0.08] dark:bg-[#191919] ${
+              className={`group overflow-hidden rounded-lg border border-black/[0.08] bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-card-hover dark:border-white/[0.08] dark:bg-[#191919] ${
                 index === 0 ? "md:col-span-2" : ""
               }`}
             >

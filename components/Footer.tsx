@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Instagram } from "lucide-react";
+import { HamrohMark } from "./HamrohMark";
 
 const links = [
+  { href: "#notes", label: "Notes" },
   { href: "#xususiyatlar", label: "Xususiyatlar" },
   { href: "#real-use", label: "Live" },
   { href: "#narx", label: "Narx" },
@@ -29,14 +30,8 @@ export function Footer() {
             className="flex min-h-[44px] min-w-[44px] items-center justify-center gap-3 font-display text-lg font-semibold text-[#111] dark:text-[#F2F0EC] sm:text-xl md:justify-start"
             aria-label="Hamrohio bosh sahifa"
           >
-            <Image
-              src="/gifs/logo.jpg"
-              alt=""
-              width={44}
-              height={44}
-              className="h-11 w-11 shrink-0 rounded-full object-cover"
-            />
-            <span>hamrohio</span>
+            <HamrohMark />
+            <span>Hamroh IO</span>
           </Link>
 
           {/* Nav: mobile — 2 columns grid, touch-friendly; desktop — horizontal */}
@@ -73,7 +68,7 @@ export function Footer() {
 
         {/* Bottom text — centered, readable on small screens */}
         <p className="text-center text-sm leading-relaxed text-[#888] dark:text-[#666] sm:mt-0">
-          🇺🇿 O&apos;zbekistonda ishlab chiqarilgan bilan ❤️
+          O&apos;zbekistonda yaratilgan shaxsiy fokus tizimi.
         </p>
         <p className="mt-2 text-center text-xs text-[#888] dark:text-[#666] sm:mt-3">
           © 2026 Hamrohio. Barcha huquqlar himoyalangan.

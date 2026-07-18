@@ -5,11 +5,11 @@ import { motion, useInView } from "framer-motion";
 import { Check, Lock } from "lucide-react";
 
 const included = [
-  "1x Hamrohio desk robot",
-  "macOS va Windows uchun desktop app",
-  "50+ jonli yuz animatsiyalari",
-  "Pomodoro, task done va idle rejimlari",
-  "Birinchi firmware yangilanishlari",
+  "1x Hamroh IO AMOLED display",
+  "Native macOS app",
+  "Tez Notes, Pomodoro, vazifalar va odatlar",
+  "Jonli premium animatsiyalar",
+  "Firmware yangilanishlari",
 ];
 
 const FOUNDERS_LEFT = 23;
@@ -44,7 +44,7 @@ export function Pricing() {
           transition={{ delay: 0.15 }}
           className="mx-auto max-w-[480px]"
         >
-          <div className="rounded-2xl border border-black/[0.08] bg-white p-8 shadow-soft transition-colors duration-300 dark:border-white/[0.08] dark:bg-[#1A1A1A] md:p-10">
+          <div className="rounded-lg border border-black/[0.08] bg-white p-8 shadow-soft transition-colors duration-300 dark:border-white/[0.08] dark:bg-[#1A1A1A] md:p-10">
             <div className="mb-6">
               <span className="font-display text-xl font-semibold text-[#111] dark:text-[#F2F0EC]">
                 Founders Edition

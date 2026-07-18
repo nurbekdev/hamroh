@@ -16,17 +16,17 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Hamrohio — O'zbekistonning birinchi desk roboti",
+  title: "Hamroh IO — Fikrni ushlaydi, fokusni saqlaydi",
   description:
-    "Monitor burchagingizda yashab, vazifalaringizni ko'radigan, siz bilan birga his qiladigan aqlli hamroh robot. O'zbekistonda ishlab chiqarilgan.",
+    "Mac bilan ishlaydigan Hamroh IO: tezkor notelar, vazifalar, Pomodoro va odatlar haqiqiy AMOLED displayda jonlanadi.",
   icons: {
     icon: "/gifs/logo.jpg",
     apple: "/gifs/logo.jpg",
   },
   openGraph: {
-    title: "Hamrohio — O'zbekistonning birinchi desk roboti",
+    title: "Hamroh IO — Fikrni ushlaydi, fokusni saqlaydi",
     description:
-      "Monitor burchagingizda yashab, vazifalaringizni ko'radigan robot. Pre-order ochiq.",
+      "Tezkor notelar, fokus va kunlik odatlar Mac bilan ishlaydigan haqiqiy AMOLED displayda.",
     type: "website",
   },
 };
@@ -54,11 +54,7 @@ export default function RootLayout({
       className={`${lora.variable} ${dmSans.variable}`}
     >
       <head>
-        <link
-          rel="preload"
-          href="/gifs/hero-relax-hamrohio.gif"
-          as="image"
-        />
+        <link rel="preload" href="/figma/idle/Blink1.png" as="image" />
       </head>
       <body className="min-w-0 font-body antialiased">
         <ThemeProvider

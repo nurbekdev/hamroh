@@ -6,30 +6,30 @@ import { motion, useInView } from "framer-motion";
 const milestones = [
   {
     id: "v1",
-    title: "Hamrohio V1",
-    period: "Hozir · In Progress",
-    desc: "Asosiy hardware + software, desktop app",
+    title: "Hamroh IO",
+    period: "Hozir · Tayyor",
+    desc: "Native Mac app, Notes, fokus, odatlar va jonli AMOLED display",
     active: true,
   },
   {
     id: "expansion",
     title: "Expansion Board",
-    period: "Q2 2026",
-    desc: "Speaker, mikrofon, batareya — plug-in",
+    period: "Keyingi bosqich",
+    desc: "Speaker, mikrofon va batareya uchun modular kengaytma",
     active: false,
   },
   {
     id: "standing",
     title: "Standing Version",
-    period: "Q3 2026",
-    desc: "Servo motor bilan harakatlana oladi",
+    period: "Rejada",
+    desc: "Ish stolida mustaqil turadigan yangi korpus",
     active: false,
   },
   {
     id: "ai",
     title: "AI Integration",
-    period: "Q4 2026",
-    desc: "Ovozli buyruqlar, AI vazifa taklifi",
+    period: "Tadqiqot",
+    desc: "Ovozli buyruqlar va foydali, sokin AI signallari",
     active: false,
   },
 ];
@@ -51,9 +51,11 @@ export function Roadmap() {
           className="mb-14 text-center"
         >
           <h2 className="font-display text-3xl font-bold text-[#111] md:text-4xl dark:text-[#F2F0EC]">
-            Nima qurilmoqda
+            Hamroh siz bilan birga o'sadi
           </h2>
-          <p className="mt-3 text-[#888] dark:text-[#666]">Ochiq roadmap — hamma narsa ko&apos;rinadi</p>
+          <p className="mt-3 text-[#888] dark:text-[#666]">
+            Bugungi mahsulot tayyor. Keyingi qadamlar esa aniq va ochiq.
+          </p>
         </motion.div>
         <div className="relative">
           <div className="absolute left-4 top-0 bottom-0 w-px bg-black/10 dark:bg-white/10 md:left-1/2 md:-translate-x-px" />

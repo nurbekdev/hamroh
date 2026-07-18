@@ -6,20 +6,24 @@ import { Plus, Minus } from "lucide-react";
 
 const items = [
   {
-    q: "Hamrohio nima?",
-    a: "Hamrohio — monitor bezeliga yopishib oladigan kichik aqlli robot. Ekranida 50+ jonli animatsiya ko'rsatadi va desktop app orqali vazifalar, focus timer va odatlarni boshqarishga yordam beradi.",
+    q: "Hamroh IO nima?",
+    a: "Hamroh IO — Mac bilan ishlaydigan shaxsiy fokus tizimi. Native app vazifa, odat, Pomodoro va tezkor notelarni boshqaradi; muhim holatlar 1.64 dyuymli AMOLED displayda ko'rinadi.",
   },
   {
     q: "Qaysi operatsion tizimlarda ishlaydi?",
-    a: "macOS 12 va undan yuqori, Windows 10 va undan yuqori versiyalar.",
+    a: "Hozirgi versiya macOS 14 va undan yuqori tizimlarda ishlaydi. App Apple silicon va Intel Mac uchun universal build sifatida tayyorlangan.",
+  },
+  {
+    q: "Tez Notes qanday ishlaydi?",
+    a: "Mac'da Command + L orqali tez note oynasini ochasiz, fikrni yozasiz va Hamroh displayiga yuborasiz. Notelar appda saqlanadi, displayda esa gorizontal swipe bilan varaqlanadi.",
   },
   {
     q: "3D printed ekanligini sezib qolmaydimi?",
     a: "Yo'q. Professional sifatli PLA filament va yuqori sifatli print texnologiyasi bilan ishlab chiqariladi. Ko'rinishi va hissi factory-made mahsulotga o'xshaydi.",
   },
   {
-    q: "WiFi shart emasmi?",
-    a: "Dastlabki ulash uchun WiFi kerak. Keyin USB-C orqali ham ishlaydi.",
+    q: "Wi-Fi yoki akkaunt kerakmi?",
+    a: "Yo'q. Hamroh Mac bilan USB-C orqali ishlaydi. Asosiy ma'lumotlar lokal saqlanadi va foydalanish uchun alohida cloud akkaunt talab qilinmaydi.",
   },
   {
     q: "Ma'lumotlarim xavfsizmi?",

@@ -4,8 +4,8 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
 const hardware = [
-  { label: "Ekran", value: "1.3\" OLED" },
-  { label: "Ulanish", value: "WiFi + USB-C" },
+  { label: "Ekran", value: "1.64\" AMOLED touch" },
+  { label: "Ulanish", value: "USB-C" },
   { label: "O'lcham", value: "90 × 60 × 25 mm" },
   { label: "Vazn", value: "~85g" },
   { label: "Material", value: "3D printed PLA" },
@@ -13,12 +13,12 @@ const hardware = [
 ];
 
 const software = [
-  { label: "OS", value: "macOS 12+ / Windows 10+" },
-  { label: "App", value: "Bepul desktop app" },
+  { label: "OS", value: "macOS 14+" },
+  { label: "Arxitektura", value: "Apple silicon + Intel" },
+  { label: "App", value: "Native macOS app" },
   { label: "Offline", value: "Ishlaydi" },
   { label: "Ma'lumotlar", value: "Lokal saqlanadi" },
   { label: "Yangilanishlar", value: "Bepul" },
-  { label: "Roadmap", value: "Open roadmap" },
 ];
 
 export function Specs() {

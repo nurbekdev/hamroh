@@ -1,8 +1,26 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { CheckCircle2, Clock3, ShieldCheck } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import {
+  BookOpen,
+  Check,
+  CircleDot,
+  Droplets,
+  Focus,
+  ShieldAlert,
+  Sparkles,
+} from "lucide-react";
+
+type Sequence = {
+  label: string;
+  title: string;
+  text: string;
+  frames: string[];
+  fps: number;
+  holdMs: number;
+  icon: typeof CircleDot;
+};
 
 const idleFrames = [
   "/figma/idle/Blink1.png",
@@ -16,251 +34,341 @@ const idleFrames = [
   "/figma/idle/Blink9.png",
 ];
 
-const taskDoneFrames = Array.from({ length: 10 }, (_, i) => `/figma/task-done/${i + 1}.png`);
-const pomodoroFrames = Array.from({ length: 14 }, (_, i) => `/figma/pomodoro-start/Frame%20${i + 25}.png`);
-const angryFrames = Array.from({ length: 14 }, (_, i) => `/figma/angry/Frame%20${i + 71}.png`);
-const readFrames = Array.from({ length: 20 }, (_, i) => `/figma/read-books/Frame%20${i + 238}.png`);
+const taskDoneFrames = Array.from(
+  { length: 10 },
+  (_, index) => `/figma/task-done/${index + 1}.png`,
+);
+const pomodoroFrames = Array.from(
+  { length: 14 },
+  (_, index) => `/figma/pomodoro-start/Frame%20${index + 25}.png`,
+);
+const angryFrames = Array.from(
+  { length: 14 },
+  (_, index) => `/figma/angry/Frame%20${index + 71}.png`,
+);
+const readFrames = Array.from(
+  { length: 20 },
+  (_, index) => `/figma/read-books/Frame%20${index + 238}.png`,
+);
 const drinkFrames = [
   170,
-  ...Array.from({ length: 24 }, (_, i) => i + 172),
+  ...Array.from({ length: 24 }, (_, index) => index + 172),
 ].map((frame) => `/figma/drink-water/Frame%20${frame}.png`);
 
-const sequences = [
+const sequences: Sequence[] = [
   {
-    label: "Idle",
-    title: "Jim turadi",
-    text: "Ish stolida sokin kutadi.",
+    label: "Sokin",
+    title: "Yonida sokin turadi",
+    text: "Diqqat kerak bo'lmaguncha display tinch va tabiiy qoladi.",
     frames: idleFrames,
-    hold: 12,
+    fps: 10,
+    holdMs: 1800,
+    icon: CircleDot,
   },
   {
-    label: "Task done",
-    title: "Vazifani nishonlaydi",
-    text: "To-do tugaganda kichik reaksiya beradi.",
+    label: "Bajarildi",
+    title: "Natijani nishonlaydi",
+    text: "Vazifa tugashi bilan kichik, yoqimli reaksiya beradi.",
     frames: taskDoneFrames,
-    hold: 10,
+    fps: 10,
+    holdMs: 1100,
+    icon: Check,
   },
   {
-    label: "Focus",
-    title: "Fokusni boshlaydi",
-    text: "Pomodoro start bo'lganda display jonlanadi.",
+    label: "Fokus",
+    title: "Fokusni boshlab beradi",
+    text: "Pomodoro boshlanganda Hamroh ham siz bilan ishga kirishadi.",
     frames: pomodoroFrames,
-    hold: 8,
+    fps: 10,
+    holdMs: 1100,
+    icon: Focus,
   },
   {
-    label: "Read",
-    title: "Kitobni eslatadi",
-    text: "Odatlar bo'limidagi eslatmalarni ko'rsatadi.",
+    label: "Kitob",
+    title: "Odatlarni eslatadi",
+    text: "Kichik signallar yaxshi odatlarni ko'z oldingizda saqlaydi.",
     frames: readFrames,
-    hold: 8,
+    fps: 10,
+    holdMs: 1000,
+    icon: BookOpen,
   },
   {
-    label: "Water",
-    title: "Suv ichishni eslatadi",
-    text: "Kun davomida sog'lom tanaffusni sezdiradi.",
+    label: "Suv",
+    title: "Tanaffusni eslatadi",
+    text: "Kun davomida suv va qisqa tanaffuslarni unutib qo'ymaysiz.",
     frames: drinkFrames,
-    hold: 8,
+    fps: 10,
+    holdMs: 1000,
+    icon: Droplets,
   },
   {
     label: "Guard",
     title: "Chalg'ishni sezadi",
-    text: "Shorts yoki reels ochilganda ogohlantiradi.",
+    text: "Qisqa videolar fokusni buzsa, Hamroh sokin signal beradi.",
     frames: angryFrames,
-    hold: 10,
+    fps: 10,
+    holdMs: 1200,
+    icon: ShieldAlert,
   },
 ];
 
-const moments = [
-  {
-    icon: Clock3,
-    title: "Fokus",
-    text: "Timer va ish ritmi desktop app bilan sinxron yuradi.",
-  },
-  {
-    icon: CheckCircle2,
-    title: "Vazifa",
-    text: "Bajarilgan ish robot yuzida darhol ko'rinadi.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Guard",
-    text: "Chalg'ituvchi saytlar ochilganda Hamroh signal beradi.",
-  },
-];
+function loadFrame(src: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    image.decoding = "async";
+    image.onload = async () => {
+      try {
+        await image.decode();
+      } catch {
+        // The image is still usable when decode() is unavailable or resolves late.
+      }
+      resolve(image);
+    };
+    image.onerror = () => reject(new Error(`Frame yuklanmadi: ${src}`));
+    image.src = src;
+  });
+}
+
+function useSequencePlayer(isVisible: boolean) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const decodedFrames = useRef<HTMLImageElement[][]>([]);
+  const activeIndexRef = useRef(0);
+  const startedAtRef = useRef(0);
+  const lastFrameRef = useRef(-1);
+  const reduceMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isReady, setIsReady] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  const allFrameSources = useMemo(
+    () => sequences.map((sequence) => sequence.frames),
+    [],
+  );
+
+  const drawFrame = useCallback((sequenceIndex: number, frameIndex: number) => {
+    const canvas = canvasRef.current;
+    const image = decodedFrames.current[sequenceIndex]?.[frameIndex];
+    if (!canvas || !image) return;
+
+    const context = canvas.getContext("2d", { alpha: false });
+    if (!context) return;
+
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "high";
+    context.fillStyle = "#000";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    Promise.all(
+      allFrameSources.map((frames) => Promise.all(frames.map(loadFrame))),
+    )
+      .then((loaded) => {
+        if (cancelled) return;
+        decodedFrames.current = loaded;
+        setIsReady(true);
+        drawFrame(0, 0);
+      })
+      .catch(() => {
+        if (!cancelled) setHasError(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [allFrameSources, drawFrame]);
+
+  useEffect(() => {
+    if (!isReady || !isVisible || reduceMotion) {
+      if (isReady) drawFrame(activeIndexRef.current, 0);
+      return;
+    }
+
+    let animationFrame = 0;
+    startedAtRef.current = performance.now();
+    lastFrameRef.current = -1;
+
+    const tick = (now: number) => {
+      const sequenceIndex = activeIndexRef.current;
+      const sequence = sequences[sequenceIndex];
+      const frameDuration = 1000 / sequence.fps;
+      const motionDuration = sequence.frames.length * frameDuration;
+      const elapsed = now - startedAtRef.current;
+
+      if (elapsed >= motionDuration + sequence.holdMs) {
+        const nextIndex = (sequenceIndex + 1) % sequences.length;
+        activeIndexRef.current = nextIndex;
+        startedAtRef.current = now;
+        lastFrameRef.current = -1;
+        setActiveIndex(nextIndex);
+        drawFrame(nextIndex, 0);
+      } else {
+        const frameIndex = Math.min(
+          Math.floor(elapsed / frameDuration),
+          sequence.frames.length - 1,
+        );
+        if (frameIndex !== lastFrameRef.current) {
+          lastFrameRef.current = frameIndex;
+          drawFrame(sequenceIndex, frameIndex);
+        }
+      }
+
+      animationFrame = requestAnimationFrame(tick);
+    };
+
+    animationFrame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [drawFrame, isReady, isVisible, reduceMotion]);
+
+  const selectSequence = useCallback(
+    (index: number) => {
+      activeIndexRef.current = index;
+      startedAtRef.current = performance.now();
+      lastFrameRef.current = -1;
+      setActiveIndex(index);
+      if (isReady) drawFrame(index, 0);
+    },
+    [drawFrame, isReady],
+  );
+
+  return {
+    canvasRef,
+    activeIndex,
+    isReady,
+    hasError,
+    selectSequence,
+  };
+}
 
 export function HeroSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [sequenceIndex, setSequenceIndex] = useState(0);
-  const [frame, setFrame] = useState(0);
-  const sequence = sequences[sequenceIndex];
-  const visibleFrame = sequence.frames[Math.min(frame, sequence.frames.length - 1)];
-  const allFrames = useMemo(() => sequences.flatMap((item) => item.frames), []);
-
-  useEffect(() => {
-    allFrames.forEach((src) => {
-      const image = new Image();
-      image.src = src;
-    });
-  }, [allFrames]);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setFrame((current) => {
-        const endAt = sequence.frames.length + sequence.hold;
-        if (current + 1 >= endAt) {
-          setSequenceIndex((index) => (index + 1) % sequences.length);
-          return 0;
-        }
-        return current + 1;
-      });
-    }, 115);
-
-    return () => window.clearInterval(timer);
-  }, [sequence.frames.length, sequence.hold]);
+  const ref = useRef<HTMLElement>(null);
+  const isVisible = useInView(ref, { margin: "120px 0px", amount: 0.2 });
+  const reduceMotion = useReducedMotion();
+  const { canvasRef, activeIndex, isReady, hasError, selectSequence } =
+    useSequencePlayer(isVisible);
+  const activeSequence = sequences[activeIndex];
 
   return (
     <section
       ref={ref}
-      className="relative isolate overflow-hidden bg-[#F8F7F4] px-4 pt-28 text-[#111] transition-colors duration-300 dark:bg-[#0E0E0E] dark:text-[#F2F0EC] sm:px-6 sm:pt-32"
+      className="relative isolate min-h-[88svh] overflow-hidden bg-[#F4F5F2] px-4 pb-6 pt-24 text-[#111] transition-colors duration-300 dark:bg-[#0B0D0C] dark:text-[#F4F5F2] sm:px-6 sm:pt-28"
     >
-      <div className="mx-auto grid min-h-[calc(100vh-7rem)] max-w-6xl content-center gap-10 pb-16 md:pb-20">
+      <div className="mx-auto flex max-w-6xl flex-col items-center">
         <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-4xl text-center"
+          initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-4xl text-center"
         >
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-white/80 px-4 py-2 text-sm font-semibold text-black/60 shadow-sm backdrop-blur-md dark:border-white/[0.08] dark:bg-white/[0.07] dark:text-white/65">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            O'zbekistonda yasalayotgan desk robot
-          </div>
-
-          <h1 className="font-display text-5xl font-bold leading-[0.98] tracking-[-0.04em] sm:text-6xl md:text-7xl lg:text-[92px]">
-            Fokusga qaytaradigan
-            <br />
-            kichik hamroh.
+          <p className="mb-3 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+            <Sparkles size={16} aria-hidden />
+            O'zbekistonda yaratilgan shaxsiy fokus tizimi
+          </p>
+          <h1 className="font-display text-5xl font-bold leading-[1.02] sm:text-6xl md:text-7xl lg:text-[76px]">
+            Hamroh IO
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-black/55 dark:text-white/55 md:text-xl">
-            Hamrohio to-do, Pomodoro va chalg'ituvchi saytlarni real qurilmadagi
-            yuz animatsiyalari bilan sezdiradi. Ish stolida turadi, lekin
-            kuningizga jonli javob beradi.
+          <p className="mx-auto mt-3 max-w-3xl text-xl font-medium leading-snug text-black/74 dark:text-white/74 sm:text-2xl md:text-[28px]">
+            Fikrni ushlaydi. Fokusni saqlaydi.
+          </p>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-black/52 dark:text-white/52 sm:text-base">
+            Vazifalar, Pomodoro, odatlar va tezkor notelar Mac bilan ishlaydigan
+            haqiqiy AMOLED displayda jonlanadi.
           </p>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 26 }}
-          animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
-          transition={{ delay: 0.12, duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto w-full max-w-5xl"
+          initial={reduceMotion ? false : { opacity: 0, y: 24, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.08, duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
+          className="relative mt-6 w-full max-w-5xl"
         >
-          <div className="relative overflow-hidden rounded-[36px] border border-black/[0.08] bg-white p-4 shadow-[0_40px_110px_rgba(0,0,0,0.12)] dark:border-white/[0.08] dark:bg-[#161616] sm:p-6 md:p-8">
-            <div className="pointer-events-none absolute left-1/2 top-12 h-56 w-56 -translate-x-1/2 rounded-full bg-emerald-400/16 blur-3xl dark:bg-emerald-400/10" />
-            <div className="relative grid gap-6 lg:grid-cols-[1fr_310px] lg:items-center">
-              <div className="grid min-h-[390px] place-items-center rounded-[28px] border border-black/[0.06] bg-[#F1F0EC] p-6 dark:border-white/[0.06] dark:bg-[#0B0B0B]">
-                <div className="relative">
-                  <div className="absolute -inset-8 rounded-[40px] bg-black/[0.04] blur-2xl dark:bg-white/[0.04]" />
-                  <div className="relative rounded-[34px] bg-[#101010] p-3 shadow-[0_28px_70px_rgba(0,0,0,0.32)]">
-                    <div className="rounded-[26px] border border-white/10 bg-black p-2">
-                      <img
-                        src={visibleFrame}
-                        alt={`Hamrohio ${sequence.label} animatsiyasi`}
-                        className="aspect-[320/172] w-[min(78vw,580px)] rounded-[18px] object-cover"
-                        style={{ imageRendering: "crisp-edges" }}
-                      />
-                    </div>
+          <div className="mx-auto w-full max-w-[520px]">
+            <div className="relative rounded-[26px] border border-black/10 bg-[#151816] p-2.5 shadow-[0_36px_90px_rgba(10,20,14,0.24)] dark:border-white/10 dark:shadow-[0_36px_90px_rgba(0,0,0,0.55)] sm:p-3">
+              <div className="overflow-hidden rounded-[20px] border border-white/10 bg-black">
+                <canvas
+                  ref={canvasRef}
+                  width={640}
+                  height={344}
+                  className="block aspect-[320/172] w-full bg-black"
+                  role="img"
+                  aria-label={`Hamroh IO: ${activeSequence.title}`}
+                />
+                {!isReady && !hasError && (
+                  <div className="absolute inset-3 grid place-items-center rounded-[20px] bg-black text-sm text-white/45">
+                    Display tayyorlanmoqda
                   </div>
-                  <div className="absolute -bottom-5 left-1/2 h-3 w-52 -translate-x-1/2 rounded-full bg-black/18 blur-md dark:bg-black/60" />
-                </div>
-              </div>
-
-              <div className="grid gap-3">
-                <div className="rounded-[24px] border border-black/[0.08] bg-black/[0.03] p-5 dark:border-white/[0.08] dark:bg-white/[0.05]">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/35 dark:text-white/35">
-                    Hozir ekranda
-                  </p>
-                  <h2 className="mt-2 font-display text-3xl font-bold">
-                    {sequence.title}
-                  </h2>
-                  <p className="mt-2 text-sm leading-relaxed text-black/52 dark:text-white/48">
-                    {sequence.text}
-                  </p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {sequences.map((item, index) => (
-                      <span
-                        key={item.label}
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          index === sequenceIndex
-                            ? "w-8 bg-[#111] dark:bg-white"
-                            : "w-2 bg-black/18 dark:bg-white/18"
-                        }`}
-                      />
-                    ))}
+                )}
+                {hasError && (
+                  <div className="absolute inset-3 grid place-items-center rounded-[20px] bg-black text-sm text-white/55">
+                    Hamroh displayi
                   </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    ["590 000", "so'm"],
-                    ["50+", "animatsiya"],
-                    ["1", "app + robot"],
-                  ].map(([value, label]) => (
-                    <div
-                      key={label}
-                      className="rounded-[20px] border border-black/[0.08] bg-black/[0.03] p-4 text-center dark:border-white/[0.08] dark:bg-white/[0.05]"
-                    >
-                      <strong className="block font-display text-xl font-bold">
-                        {value}
-                      </strong>
-                      <span className="mt-1 block text-xs text-black/45 dark:text-white/45">
-                        {label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="grid gap-2">
-                  {moments.map((item) => (
-                    <div
-                      key={item.title}
-                      className="flex gap-3 rounded-[18px] border border-black/[0.07] bg-black/[0.03] p-4 dark:border-white/[0.07] dark:bg-white/[0.05]"
-                    >
-                      <item.icon size={18} className="mt-0.5 shrink-0 text-black/45 dark:text-white/45" />
-                      <div>
-                        <h3 className="font-display text-sm font-semibold">
-                          {item.title}
-                        </h3>
-                        <p className="mt-1 text-xs leading-relaxed text-black/48 dark:text-white/45">
-                          {item.text}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                )}
               </div>
+            </div>
+            <div className="mx-auto h-5 w-[42%] border-x border-black/10 bg-black/[0.035] dark:border-white/10 dark:bg-white/[0.04]" />
+            <div className="mx-auto h-px w-[66%] bg-black/18 dark:bg-white/18" />
+          </div>
+
+          <div className="mx-auto mt-3 flex max-w-4xl flex-col items-center gap-2.5 text-center">
+            <div className="text-sm" aria-live="polite">
+              <strong className="font-semibold">{activeSequence.title}.</strong>{" "}
+              <span className="text-black/50 dark:text-white/50">
+                {activeSequence.text}
+              </span>
+            </div>
+
+            <div
+              className="flex max-w-full gap-1 overflow-x-auto rounded-lg border border-black/8 bg-white/65 p-1 shadow-sm backdrop-blur-xl dark:border-white/8 dark:bg-white/[0.055]"
+              role="tablist"
+              aria-label="Hamroh animatsiyalari"
+            >
+              {sequences.map((sequence, index) => {
+                const Icon = sequence.icon;
+                const isActive = index === activeIndex;
+                return (
+                  <button
+                    key={sequence.label}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => selectSequence(index)}
+                    className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition sm:text-sm ${
+                      isActive
+                        ? "bg-[#121513] text-white shadow-sm dark:bg-white dark:text-[#111]"
+                        : "text-black/48 hover:bg-black/[0.05] hover:text-black/75 dark:text-white/48 dark:hover:bg-white/[0.07] dark:hover:text-white/75"
+                    }`}
+                  >
+                    <Icon size={15} aria-hidden />
+                    {sequence.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.3 }}
-          className="mx-auto flex flex-wrap items-center justify-center gap-3"
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.22 }}
+          className="mt-4 flex flex-wrap items-center justify-center gap-3"
         >
           <a
             href="https://t.me/nnpgo"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full bg-[#111] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(0,0,0,0.18)] transition hover:-translate-y-0.5 active:translate-y-0 dark:bg-white dark:text-[#111]"
+            className="inline-flex h-12 items-center justify-center rounded-lg bg-[#121513] px-6 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 dark:bg-white dark:text-[#111]"
           >
-            Pre-order qilish
+            Hamrohni buyurtma qilish
           </a>
           <a
-            href="#real-use"
-            className="rounded-full border border-black/12 bg-white/50 px-7 py-3.5 text-sm font-semibold text-black/65 backdrop-blur-md transition hover:bg-white hover:text-black dark:border-white/12 dark:bg-white/[0.04] dark:text-white/65 dark:hover:bg-white/[0.08] dark:hover:text-white"
+            href="#notes"
+            className="inline-flex h-12 items-center justify-center rounded-lg border border-black/12 bg-white/55 px-6 text-sm font-semibold text-black/68 backdrop-blur-lg transition hover:bg-white hover:text-black dark:border-white/12 dark:bg-white/[0.04] dark:text-white/68 dark:hover:bg-white/[0.08] dark:hover:text-white"
           >
-            Live ko'rish
+            Yangi Notes funksiyasi
           </a>
         </motion.div>
       </div>

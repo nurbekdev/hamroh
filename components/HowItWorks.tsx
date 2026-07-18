@@ -2,23 +2,23 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Pin, Smartphone, Smile } from "lucide-react";
+import { Cable, MonitorDown, Sparkles } from "lucide-react";
 
 const steps = [
   {
-    icon: Pin,
-    title: "Monitor bezeliga yoping",
-    desc: "Ikki soniyada o'rnating. Hech qanday vintlar, rezina yoki kleysiz.",
+    icon: MonitorDown,
+    title: "Mac app'ni o'rnating",
+    desc: "Native macOS app vazifalar, notes, odatlar va fokusni bir joyga to'playdi.",
   },
   {
-    icon: Smartphone,
-    title: "App'ni ulang",
-    desc: "macOS va Windows uchun bepul desktop app. WiFi orqali ulanadi.",
+    icon: Cable,
+    title: "Hamrohni USB-C bilan ulang",
+    desc: "Setup qurilmani avtomatik topadi, tekshiradi va bir daqiqada tayyorlaydi.",
   },
   {
-    icon: Smile,
-    title: "Hamrohingizga ega bo'ling",
-    desc: "Vazifalar, timer, odatlar — barchasi monitor oldida.",
+    icon: Sparkles,
+    title: "Fikr va fokus ko'z oldingizda",
+    desc: "Tez note, timer va muhim signallar haqiqiy AMOLED displayda ko'rinadi.",
   },
 ];
 
@@ -56,24 +56,24 @@ export function HowItWorks() {
           transition={{ duration: 0.5 }}
           className="mb-14 text-center"
         >
-          <h2 className="font-display text-3xl font-bold text-[#111] md:text-4xl dark:text-[#F2F0EC]">
-            Qanday ishlaydi
+          <h2 className="font-display text-3xl font-bold text-[#111] md:text-5xl dark:text-[#F2F0EC]">
+            Bir daqiqada ishga tayyor.
           </h2>
-          <p className="mt-3 text-[#888] dark:text-[#666]">3 ta oddiy qadam</p>
+          <p className="mt-3 text-[#888] dark:text-[#666]">Ortiqcha texnik sozlamalarsiz.</p>
         </motion.div>
         <motion.div
           variants={container}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid gap-6 md:grid-cols-3"
+          className="grid border-y border-black/[0.08] md:grid-cols-3 dark:border-white/[0.08]"
         >
           {steps.map((step, i) => (
             <motion.div
               key={step.title}
               variants={item}
-              className="rounded-2xl border border-black/[0.08] bg-white p-8 shadow-card transition hover:shadow-card-hover dark:border-white/[0.08] dark:bg-[#1A1A1A]"
+              className="border-b border-black/[0.08] py-8 md:border-b-0 md:border-r md:px-8 md:last:border-r-0 md:first:pl-0 md:last:pr-0 dark:border-white/[0.08]"
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#111] text-white">
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-md bg-[#111] text-white dark:bg-white dark:text-[#111]">
                 <step.icon size={24} strokeWidth={1.8} />
               </div>
               <h3 className="font-display text-xl font-semibold text-[#111] dark:text-[#F2F0EC]">
